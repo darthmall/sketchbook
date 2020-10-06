@@ -4,7 +4,7 @@
   "scripts": {
     "serve": "node src/server.js",
     "start": "concurrently \"npm:serve\" \"npm:watch\"",
-    "watch": "browser-sync start --proxy \"localhost:8080\" --serveStatic \"src\" --files \"src/assets\" \"sketches\""
+    "watch": "browser-sync start --proxy \"localhost:8080\" --serveStatic \"src\" \"sketches\" --files \"src/assets\" \"sketches\""
   },
   "author": "Evan Sheehan <evan.s@hey.com> (https://darthmall.net)",
   "license": "ACSL",

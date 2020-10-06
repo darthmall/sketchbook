@@ -5,9 +5,21 @@ const polka = require("polka");
 
 nunjucks.configure(path.join("src", "templates"));
 
-polka().get("/", (req, res) => {
+function index(req, res) {
   res.end(nunjucks.render("index.njk"));
-}).listen(8080, err => {
-  if (err) throw err;
-  console.log("> Running on http://localhost:8080/");
-});
+}
+
+function sketch(req, res) {
+  res.end(nunjucks.render(
+    "sketch.njk",
+    { sketch: req.params.sketch }
+  ))
+}
+
+polka()
+  .get("/", index)
+  .get("/:sketch/", sketch)
+  .listen(8080, (err) => {
+    if (err) throw err;
+    console.log("> Running on http://localhost:8080/");
+  });
