@@ -62,3 +62,9 @@ h1 {
   display: flex;
   justify-content: center;
 }
+
+#back-link {
+  position: absolute;
+  top: 0.5em;
+  left: 0.5em;
+}
