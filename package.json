@@ -2,12 +2,16 @@
   "name": "@darth_mall/sketchbook",
   "description": "A collection of personal p5.js sketches",
   "scripts": {
-    "start": "node src/server.js"
+    "serve": "node src/server.js",
+    "start": "concurrently \"npm:serve\" \"npm:watch\"",
+    "watch": "browser-sync start --proxy \"localhost:8080\" --serveStatic \"src\" --files \"src/assets\" \"sketches\""
   },
   "author": "Evan Sheehan <evan.s@hey.com> (https://darthmall.net)",
   "license": "ACSL",
   "private": true,
   "devDependencies": {
+    "browser-sync": "^2.26.12",
+    "concurrently": "^5.3.0",
     "nunjucks": "^3.2.2",
     "polka": "^0.5.2"
   }

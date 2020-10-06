@@ -1,0 +1,11 @@
+*, *::after, *::before {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: sans-serif;
+}
+
+body {
+  min-height: 100vh;
+}
