@@ -43,9 +43,8 @@
 }
 
 html {
-  background-color: gainsboro;
   font-family: "Source Sans", sans-serif;
-  color: rgb(31, 33, 37);
+  color: #333;
 }
 
 body {
