@@ -2,8 +2,12 @@
   "name": "@darth_mall/sketchbook",
   "description": "A collection of personal p5.js sketches",
   "scripts": {
+    "start": "node src/server.js"
   },
   "author": "Evan Sheehan <evan.s@hey.com> (https://darthmall.net)",
   "license": "ACSL",
-  "private": true
+  "private": true,
+  "devDependencies": {
+    "polka": "^0.5.2"
+  }
 }
