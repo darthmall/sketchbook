@@ -2,4 +2,9 @@
 
 {% block content %}
 <h1>Sketchbook</h1>
+<ul>
+  {% for sketch in sketches %}
+  <li><a href="/{{ sketch }}/">{{ sketch }}</a></li>
+  {% endfor %}
+</ul>
 {% endblock %}
