@@ -9,9 +9,7 @@
   <link rel="stylesheet" href="/assets/sketchbook.css" />
   {% block scripts %}{% endblock %}
 </head>
-<body>
-  <main tabindex="-1">
-    {% block content %}{% endblock %}
-  </main>
+<body class="{% block bodyClass %}{% endblock %}">
+  {% block content %}{% endblock %}
 </body>
 </html>
