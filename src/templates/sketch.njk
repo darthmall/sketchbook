@@ -2,7 +2,10 @@
 
 {% block scripts %}
 <script type="text/javascript" src="/assets/p5.js"></script>
-<script type="module" src="/{{ sketch }}.js"></script>
+{% for script in lib %}
+<script type="text/javascript" src="/lib/{{ script }}"></script>
+{% endfor %}
+<script type="text/javascript" src="/{{ sketch }}.js"></script>
 {% endblock %}
 
 {% block bodyClass %}sketch{% endblock %}

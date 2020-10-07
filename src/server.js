@@ -9,7 +9,10 @@ nunjucks.configure(path.join("src", "templates"));
 const SKETCHDIR = path.join(path.dirname(__dirname), "sketches");
 
 function index(req, res) {
-  let sketches = fs.readdirSync(SKETCHDIR).map((s) => path.basename(s, ".js"));
+  let sketches = fs.readdirSync(SKETCHDIR)
+    .filter((s) => path.extname(s) === ".js")
+    .map((s) => path.basename(s, ".js"));
+
   res.end(nunjucks.render(
     "index.njk",
     { sketches }
@@ -17,9 +20,15 @@ function index(req, res) {
 }
 
 function sketch(req, res) {
+  let lib = fs.readdirSync(path.join(SKETCHDIR, "lib"))
+      .map((s) => path.basename(s));
+
   res.end(nunjucks.render(
     "sketch.njk",
-    { sketch: req.params.sketch }
+    {
+      lib,
+      sketch: req.params.sketch
+    }
   ))
 }
 
