@@ -11,7 +11,16 @@ const SKETCHDIR = path.join(path.dirname(__dirname), "sketches");
 function index(req, res) {
   let sketches = fs.readdirSync(SKETCHDIR)
     .filter((s) => path.extname(s) === ".js")
-    .map((s) => path.basename(s, ".js"));
+    .map((s) => {
+      const name = path.basename(s, ".js"),
+            stat = fs.lstatSync(path.join(SKETCHDIR, s));
+
+      return {
+        name,
+        created: new Date(stat.birthtime),
+        modified: new Date(stat.mtime)
+      };
+    });
 
   res.end(nunjucks.render(
     "index.njk",
