@@ -1,11 +1,13 @@
 // An attempt to recreate Jared Tarbell's Sand.Stroke
 // http://www.complexification.net/gallery/machines/sandstroke/
 
-const style = document.createElement("style");
-style.innerText = `html {
+style = `html {
   background-color: #2E294E;
+}
+
+a {
+  color: white;
 }`;
-document.head.appendChild(style);
 
 var size = 600;
 
@@ -22,6 +24,8 @@ function init() {
 }
 
 function setup() {
+  Sketch.createStyle(style);
+
   createCanvas(size, size);
 
   colors = [
