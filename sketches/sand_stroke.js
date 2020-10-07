@@ -7,39 +7,38 @@ style.innerText = `html {
 }`;
 document.head.appendChild(style);
 
-function sketch(p) {
-  const size = 600;
+var size = 600;
 
-  const colors = [
-    p.color("#FFF2F1"),
-    p.color("#107E7D"),
-    p.color("#D1495B"),
-    p.color("#FFD400")
-  ];
+var colors = [];
 
-  const numLines = 12;
+var numLines = 12;
 
-  let lines = [];
+var lines = [];
 
-  function init() {
-    for (let i = 0; i < numLines; i++) {
-      lines[i] = [p.random(size), p.random(colors)];
-    }
+function init() {
+  for (let i = 0; i < numLines; i++) {
+    lines[i] = [random(size), random(colors)];
   }
-
-  p.setup = function() {
-    p.createCanvas(size, size);
-    init();
-    p.noLoop();
-  };
-
-  p.draw = function() {
-    for (let i = 0; i < numLines; i++) {
-      const [y, c] = lines[i];
-      p.stroke(p.red(c), p.green(c), p.blue(c), 255);
-      p.line(0, y, size, y);
-    }
-  };
 }
 
-new p5(sketch);
+function setup() {
+  createCanvas(size, size);
+
+  colors = [
+    color("#FFF2F1"),
+    color("#107E7D"),
+    color("#D1495B"),
+    color("#FFD400")
+  ];
+
+  init();
+  noLoop();
+};
+
+function draw() {
+  for (let i = 0; i < numLines; i++) {
+    const [y, c] = lines[i];
+    stroke(red(c), green(c), blue(c), 255);
+    line(0, y, size, y);
+  }
+};
