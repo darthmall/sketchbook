@@ -1,7 +1,7 @@
 // An attempt to recreate Jared Tarbell's Sand.Stroke
 // http://www.complexification.net/gallery/machines/sandstroke/
 
-style = `html {
+var style = `html {
   background-color: #2E294E;
 }
 
@@ -9,10 +9,8 @@ a {
   color: white;
 }`;
 
-var size = 600,
-    numLines = 12,
-    iterations = 7,
-    iter = 0;
+var size = 1600,
+    numLines = 9;
 
 var colors = [];
 
@@ -33,13 +31,32 @@ function init() {
 function setup() {
   Sketch.createStyle(style);
 
-  createCanvas(size, size);
+  const renderer = createCanvas(size, size);
+
+  renderer.canvas.style.maxHeight = "75vh";
+  renderer.canvas.style.maxWidth = "75vw";
 
   colors = [
     color("#FFF2F1"),
     color("#107E7D"),
     color("#D1495B"),
-    color("#FFD400")
+
+    // Padding background and foreground colors to increase the likelihood that
+    // a sand stroke will end up with one of these colors. This softens the
+    // effect of the visual.
+    color("#FFD400"),
+    color("#FFD400"),
+    color("#FFD400"),
+    color("#FFD400"),
+    color("#FFD400"),
+    color("#FFD400"),
+
+    color("#2E294E"),
+    color("#2E294E"),
+    color("#2E294E"),
+    color("#2E294E"),
+    color("#2E294E"),
+    color("#2E294E")
   ];
 
   colors.forEach(c => c.setAlpha(16));
@@ -51,51 +68,52 @@ function draw() {
   for (let i = 0; i < numLines; i++) {
     lines[i]();
   }
-
-  iter++;
-  if (iter > iterations) noLoop();
 };
 
 function mouseClicked() {
-  init();
-  clear();
-  loop();
+  if (isLooping()) {
+    noLoop();
+  } else {
+    loop();
+  }
 }
 
 function sandstroke(start, end) {
   var amplitude = 400,
       myColor = color(0, 0, 0, 16),
-      grains = 200;
+      grains = 200,
+      coro;
 
-  function draw() {
+  function* render() {
     const vec = p5.Vector.sub(end, start),
           l = vec.mag();
-
-    const originColor = color(myColor.toString("rgba"));
-    originColor.setAlpha(alpha(myColor) * 3);
 
     // "sg" comes from Jared Tarbell's original Processing sketch. I'm not sure
     // what it means, but it is used in the sine function that spreads out the
     // "sand grains".
     let sg = random(0.01, 0.1);
 
-    translate(start);
-    rotate(vec.heading());
+    let i = 0;
 
-    for (let i = 0; i < l; i++) {
+    while (true) {
       const t = i / l,
             w = sg / grains,
-            x = lerp(0, l, t),
-            c = color(myColor.toString("rgba"));
+            x = lerp(0, l, t);
 
-      stroke(originColor);
+      push();
+
+      translate(start);
+      rotate(vec.heading());
+
+      myColor.setAlpha(16);
+      stroke(myColor);
       point(x, 0);
 
       for (let j = 0; j < grains; j++) {
         const y = amplitude * sin(j * w);
 
-        c.setAlpha(255 * (0.1 - j / (grains * 10 + 10)));
-        stroke(c);
+        myColor.setAlpha(255 * (0.1 - (j / (grains * 10 + 10))));
+        stroke(myColor);
 
         point(x, y);
         point(x, -y);
@@ -108,7 +126,27 @@ function sandstroke(start, end) {
       // Clamp the value between [-0.3, 0.3]. Again the magic numbers are from
       // Tarbell.
       sg = min(max(-0.3, sg), 0.3);
+
+      // Randomly switch colors. More magic numbers courtesy of Jared Tarbell.
+      // Don't be fooled: random(10000) > 9900 isn't 99 / 100 because random()
+      // returns a floating point so there are significantly more than 10k
+      // possible return values from that call.
+      if (sg > -0.01 && sg < 0.01 && random(10000) > 9900) {
+        myColor = random(colors);
+      }
+
+      pop();
+
+      yield;
+
+      i++;
+      if (i > l) i = 0;
     }
+  }
+
+  function draw() {
+    if (!coro) coro = render();
+    coro.next();
   }
 
   draw.amplitude = function(v) {
