@@ -62,6 +62,9 @@ function setup() {
   colors.forEach(c => c.setAlpha(16));
 
   init();
+
+  // Set a lower framerate just to keep the fan from spinning up
+  frameRate(15);
 };
 
 function draw() {
